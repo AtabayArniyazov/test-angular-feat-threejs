@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as THREE from 'three';
+import WebGL from 'three/addons/capabilities/WebGL.js';
 
 @Component({
   selector: 'app-threejs-visual',
@@ -47,6 +48,13 @@ export class ThreejsVisualComponent implements OnInit {
       cube.rotation.y += 0.01;
       renderer.render(scene, camera);
     }
-    animate();
+
+    if (WebGL.isWebGL2Available()) {
+      animate();
+    } else {
+      const warning = WebGL.getWebGL2ErrorMessage();
+
+      document.getElementById('threejs-canvas')?.appendChild(warning);
+    }
   }
 }
